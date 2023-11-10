@@ -1,0 +1,75 @@
+#!/bin/bash
+
+if [[ -n "$1" ]]; then
+    token="$1"
+else
+    echo "Please input you token"
+    exit 1
+fi
+if [[ -n "$2" ]]; then
+    alias="$2"
+else
+    echo "Using Default alias qubic_miner"
+    alias="qubic_miner"
+fi
+if [[ -n "$3" ]]; then
+    version="$3"
+else
+    echo "Using Default qli-Client version 1.5.9"
+    version="1.5.9"
+fi
+if [[ -n "$4" ]]; then
+    threads="$4"
+else
+    echo "Using Default threads 16"
+    threads="16"
+fi
+
+sudo apt update
+DEBIAN_FRONTEND=noninteractive \
+  sudo apt-get \
+  -o Dpkg::Options::=--force-confold \
+  -o Dpkg::Options::=--force-confdef \
+  -y --allow-downgrades --allow-remove-essential --allow-change-held-packages \
+  dist-upgrade
+
+sudo apt update && DEBIAN_FRONTEND=noninteractive apt install --yes wine jq
+
+useradd -m -s /bin/bash qubic
+echo "qubic ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/custom
+
+sudo -u qubic bash <<ENDOFMESSAGE
+cd && wget https://app.qubic.li/downloads/qli-Client-$version-Linux-x64.tar.gz
+mkdir qcli
+tar -xzf qli-Client-$version-Linux-x64.tar.gz -C qcli
+rm qli-Client-$version-Linux-x64.tar.gz
+echo "./qli-Client" > qcli/qli-Service.sh
+chmod +x qcli/qli-Service.sh
+
+jq --arg threads "$threads" \
+    --arg token "$token" \
+    --arg alias "$alias" \
+    '.Settings.amountOfThreads = "$threads" | .Settings.accessToken = "$token" | .Settings.alias = "$alias"' \
+    qcli/appsettings.json > tmp.json && mv tmp.json qcli/appsettings.json
+
+sudo tee /etc/systemd/system/qli.service > /dev/null <<EOF
+[Unit]
+After=network.target
+[Service]
+User=qubic
+StandardOutput=syslog
+StandardError=syslog
+WorkingDirectory=$(su - qubic -c 'echo $HOME')/qcli
+ExecStart=/bin/bash qli-Service.sh
+Restart=on-failure
+RestartSec=5s
+[Install]
+WantedBy=default.target
+EOF
+
+ENDOFMESSAGE
+
+sudo systemctl daemon-reload
+sudo systemctl enable qli.service
+sudo systemctl start qli.service
+sudo journalctl -u qli.service -f
