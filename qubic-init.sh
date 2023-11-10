@@ -2,27 +2,31 @@
 
 if [[ -n "$1" ]]; then
     token="$1"
+    echo "Using token $token"
 else
     echo "Please input you token"
     exit 1
 fi
 if [[ -n "$2" ]]; then
     alias="$2"
+    echo "Set Alias to $alias"
 else
-    echo "Using Default alias qubic_miner"
-    alias="qubic_miner"
+    echo "Using Default alias qli_Client"
+    alias="qli_Client"
 fi
 if [[ -n "$3" ]]; then
-    version="$3"
+    threads="$3"
+    echo "Set threads to $threads"
+else
+    echo "Using Default training threads 16"
+    threads="16"
+fi
+if [[ -n "$4" ]]; then
+    version="$4"
+    echo "Using qli-Client version $version"
 else
     echo "Using Default qli-Client version 1.5.9"
     version="1.5.9"
-fi
-if [[ -n "$4" ]]; then
-    threads="$4"
-else
-    echo "Using Default threads 16"
-    threads="16"
 fi
 
 sudo apt update
