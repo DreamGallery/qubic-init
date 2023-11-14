@@ -30,6 +30,8 @@ else
 fi
 
 sudo apt update
+echo "\$nrconf{kernelhints} = 0;" >> /etc/needrestart/needrestart.conf
+echo "\$nrconf{restart} = 'l';" >> /etc/needrestart/needrestart.conf
 DEBIAN_FRONTEND=noninteractive \
   sudo apt-get \
   -o Dpkg::Options::=--force-confold \
