@@ -45,7 +45,7 @@ useradd -m -s /bin/bash qubic
 echo "qubic ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/custom
 
 sudo -u qubic bash <<ENDOFMESSAGE
-cd && wget https://app.qubic.li/downloads/qli-Client-$version-Linux-x64.tar.gz
+cd && wget https://dl.qubic.li/downloads/qli-Client-$version-Linux-x64.tar.gz
 mkdir qcli
 tar -xzf qli-Client-$version-Linux-x64.tar.gz -C qcli
 rm qli-Client-$version-Linux-x64.tar.gz
