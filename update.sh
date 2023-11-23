@@ -14,11 +14,11 @@ sudo systemctl stop qli.service
 
 sudo -u qubic bash <<EOF
 cd && wget https://dl.qubic.li/downloads/qli-Client-$version-Linux-x64.tar.gz
-cp qcli/appsettings.json appsetting.json
+cp qcli/appsettings.json appsettings.json
 cp qcli/qli-Service.sh qli-Service.sh
 rm -rf qcli/*
 tar -xzf qli-Client-$version-Linux-x64.tar.gz -C qcli
-mv appsetting.json qcli/appsetting.json
+mv appsettings.json qcli/appsettings.json
 mv qli-Service.sh qcli/qli-Service.sh
 rm qli-Client-$version-Linux-x64.tar.gz
 EOF
