@@ -18,19 +18,19 @@ if [[ -n "$3" ]]; then
     threads="$3"
     echo "Set threads to $threads"
 else
-    echo "Using Default training threads 16"
-    threads="16"
+    echo "Using Default training threads 2"
+    threads="2"
+fi
+if [[ -n "$4" ]]; then
+    version="$4"
+    echo "Using qli-Client version $version"
+else
+    echo "Using Default qli-Client version 1.6.1"
+    version="1.6.1"
 fi
 
-sudo apt update
 echo "\$nrconf{kernelhints} = 0;" >> /etc/needrestart/needrestart.conf
 echo "\$nrconf{restart} = 'l';" >> /etc/needrestart/needrestart.conf
-DEBIAN_FRONTEND=noninteractive \
-  sudo apt-get \
-  -o Dpkg::Options::=--force-confold \
-  -o Dpkg::Options::=--force-confdef \
-  -y --allow-downgrades --allow-remove-essential --allow-change-held-packages \
-  dist-upgrade
 
 sudo apt update && DEBIAN_FRONTEND=noninteractive apt install --yes wine jq
 
@@ -38,17 +38,17 @@ useradd -m -s /bin/bash qubic
 echo "qubic ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/custom
 
 sudo -u qubic bash <<ENDOFMESSAGE
-cd && wget https://github.com/DreamGallery/qubic-init/releases/download/v1.5.9/qli-Cilent.tar.gz
-mkdir qcli_b
-tar -xzf qli-Cilent.tar.gz -C qcli_b
-mv qcli_b/qli-Cilent/* qcli_b/
-rm -rf qcli_b/qli-Cilent && rm qli-Cilent.tar.gz
+cd && wget https://dl.qubic.li/downloads/qli-Client-$version-Linux-x64.tar.gz
+mkdir qcli
+tar -xzf qli-Client-$version-Linux-x64.tar.gz -C qcli
+rm qli-Client-$version-Linux-x64.tar.gz
+echo "./qli-Client" > qcli/qli-Service.sh
 chmod +x qcli/qli-Service.sh
 
 jq --arg threads "$threads" \
     --arg token "$token" \
     --arg alias "$alias" \
-    '.Settings.amountOfThreads = "$threads" | .Settings.accessToken = "$token" | .Settings.alias = "$alias"' \
+    '.Settings.amountOfThreads = "$threads" | .Settings.accessToken = "$token" | .Settings.alias = "$alias" | .Settings.useAvx2 = "true"' \
     qcli/appsettings.json > tmp.json && mv tmp.json qcli/appsettings.json
 
 sudo tee /etc/systemd/system/qli.service > /dev/null <<EOF
