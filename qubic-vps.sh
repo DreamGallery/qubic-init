@@ -71,4 +71,4 @@ ENDOFMESSAGE
 sudo systemctl daemon-reload
 sudo systemctl enable qli.service
 sudo systemctl start qli.service
-sudo journalctl -u qli.service -f
+# sudo journalctl -u qli.service -f
