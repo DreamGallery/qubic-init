@@ -25,8 +25,8 @@ if [[ -n "$4" ]]; then
     version="$4"
     echo "Using qli-Client version $version"
 else
-    echo "Using Default qli-Client version 1.6.1"
-    version="1.6.1"
+    echo "Using Default qli-Client version 1.7.9"
+    version="1.7.9"
 fi
 
 sudo apt update
