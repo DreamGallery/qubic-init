@@ -27,13 +27,13 @@ if [[ -n "$4" ]]; then
         url="$4"
     else
         version="$4"
-        url="https://dl.qubic.li/downloads/qli-Client-$version-beta-Linux-x64.tar.gz"
+        url="https://dl.qubic.li/downloads/qli-Client-$version-Linux-x64.tar.gz"
         echo "Using qli-Client version $version"
     fi
 else
     echo "Using Default qli-Client version 1.8.0"
     version="1.8.0"
-    url="https://dl.qubic.li/downloads/qli-Client-$version-beta-Linux-x64.tar.gz"
+    url="https://dl.qubic.li/downloads/qli-Client-$version-Linux-x64.tar.gz"
 fi
 
 sed -i 's/focal/jammy/g' /etc/apt/sources.list
