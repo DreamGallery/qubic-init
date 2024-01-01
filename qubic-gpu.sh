@@ -1,6 +1,8 @@
 #!/bin/bash
 
-echo "Usage ./qubic-gpu.sh token [alias] [threads/gpu_num] [version|dafault 1.8.0|qli-Cilent url]"
+echo "Usage ./qubic-gpu.sh token [alias] [threads/gpu_num] [version|dafault 1.8.0|qli-Cilent url] [diyschool|qubic|default baseUrl:"https://mine.qubic.li"]"
+echo "if you want to change the default baseUrl, diyschool for https://ai.diyschool.ch, qubic for https://mine.qubic.li"
+echo "Example ./qubic-gpu.sh token alias threads 1.8.0 diyschool. 5 args needed."
 if [[ -n "$1" ]]; then
     token="$1"
     echo "Using token $token"
