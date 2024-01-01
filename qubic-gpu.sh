@@ -35,6 +35,18 @@ else
     version="1.8.0"
     url="https://dl.qubic.li/downloads/qli-Client-$version-Linux-x64.tar.gz"
 fi
+if [[ -n "$5" ]]; then
+    if [[ $5=="diyschool" ]]; then
+        baseUrl="https://ai.diyschool.ch/"
+    elif [[ $5=="qubic" ]]; then
+        baseUrl="https://mine.qubic.li/"
+    else
+        echo "invalid baseUrl, please check."
+        exit 1
+    fi
+else
+    baseUrl="https://mine.qubic.li/"
+fi
 
 sed -i 's/focal/jammy/g' /etc/apt/sources.list
 sed -i 's/focal/jammy/g' /etc/apt/sources.list.d/*.list
@@ -55,9 +67,10 @@ echo "./qli-Client" > qcli/qli-Service.sh
 chmod +x qcli/qli-Service.sh
 
 jq --arg threads "$threads" \
+    --arg baseUrl "$baseUrl" \
     --arg token "$token" \
     --arg alias "$alias" \
-    '.Settings.amountOfThreads = "$threads" | .Settings.accessToken = "$token" | .Settings.alias = "$alias" | .Settings.allowHwInfoCollect = true | .Settings."overwrites" = {"CUDA": "12"}' \
+    '.Settings.baseUrl = "$baseUrl"| .Settings.amountOfThreads = "$threads" | .Settings.accessToken = "$token" | .Settings.alias = "$alias" | .Settings.allowHwInfoCollect = true | .Settings."overwrites" = {"CUDA": "12"}' \
     qcli/appsettings.json > tmp.json && mv tmp.json qcli/appsettings.json
 
 sudo tee /etc/supervisor/conf.d/qubic.conf > /dev/null <<EOF
