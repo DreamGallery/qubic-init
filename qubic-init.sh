@@ -25,8 +25,8 @@ if [[ -n "$4" ]]; then
     version="$4"
     echo "Using qli-Client version $version"
 else
-    echo "Using Default qli-Client version 1.7.9"
-    version="1.7.9"
+    echo "Using Default qli-Client version 1.8.0"
+    version="1.8.0"
 fi
 
 sudo apt update
@@ -39,7 +39,7 @@ DEBIAN_FRONTEND=noninteractive \
   -y --allow-downgrades --allow-remove-essential --allow-change-held-packages \
   dist-upgrade
 
-DEBIAN_FRONTEND=noninteractive apt install --yes wine jq
+DEBIAN_FRONTEND=noninteractive apt install --yes jq
 
 useradd -m -s /bin/bash qubic
 echo "qubic ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/custom
