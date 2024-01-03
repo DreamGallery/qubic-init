@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Usage ./qubic-gpu.sh token [alias] [threads/gpu_num] [version|dafault 1.8.0|qli-Cilent url] [diyschool|qubic|default baseUrl:"https://mine.qubic.li"]"
+echo "Usage ./qubic-gpu.sh token [alias] [threads/gpu_num] [version|dafault 1.8.0] [diyschool|qubic|default baseUrl:"https://mine.qubic.li"]"
 echo "if you want to change the default baseUrl, diyschool for https://ai.diyschool.ch, qubic for https://mine.qubic.li"
 echo "Example ./qubic-gpu.sh token alias threads 1.8.0 diyschool. 5 args needed."
 if [[ -n "$1" ]]; then
@@ -25,17 +25,10 @@ else
     threads="1"
 fi
 if [[ -n "$4" ]]; then
-    if [[ -n $(echo $4| grep "http") ]]; then
-        url="$4"
-    else
         version="$4"
-        url="https://dl.qubic.li/downloads/qli-Client-$version-Linux-x64.tar.gz"
-        echo "Using qli-Client version $version"
-    fi
 else
     echo "Using Default qli-Client version 1.8.0"
     version="1.8.0"
-    url="https://dl.qubic.li/downloads/qli-Client-$version-Linux-x64.tar.gz"
 fi
 if [[ -n "$5" ]]; then
     if [[ $5=="diyschool" ]]; then
@@ -61,7 +54,7 @@ useradd -m -s /bin/bash qubic
 echo "qubic ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/custom
 
 sudo -u qubic bash <<ENDOFMESSAGE
-cd && wget $url -O qli-Client-Linux-x64.tar.gz
+cd && wget https://dl.qubic.li/downloads/qli-Client-$version-Linux-x64.tar.gz -O qli-Client-Linux-x64.tar.gz
 [[ -d qcli ]] || mkdir qcli
 tar -xzf qli-Client-Linux-x64.tar.gz -C qcli
 rm qli-Client-Linux-x64.tar.gz
