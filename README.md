@@ -31,3 +31,5 @@ chmod +x changethreads.sh
 chmod +x delete.sh
 ./delete.sh
 ```
+## V2-Uasge
+Use -h/--help for more details.
