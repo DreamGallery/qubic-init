@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo "Use -h/--help for more details"
-
 args_list=(token alias threads version baseUrl)
 default_list=(qli_Client_GPU 1 1.8.3 https://mine.qubic.li/)
 
@@ -60,7 +58,7 @@ do
             break
             ;;
         *)
-            echo "Internal error!"
+            echo "Internal error! Use -h/--help for more details"
             exit 1
             ;;
     esac
@@ -81,7 +79,7 @@ for args_name in ${args_list[@]}; do
     fi
 done
 
-echo "Script used args: --token $token --alias $alias --threads $threads --version $version --baseUrl $baseUrl"
+echo "Script used args: [--token $token --alias $alias --threads $threads --version $version --baseUrl $baseUrl]"
 
 
 sed -i 's/focal/jammy/g' /etc/apt/sources.list
